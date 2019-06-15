@@ -24,7 +24,7 @@ def adddata():
 
        file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
        con.close()
-       return render_template("adddata.html", msg = "Record inserted successfully")
+   return render_template("adddata.html", msg = "Record inserted successfully")
 
 
 if __name__ == '__main__':
