@@ -30,18 +30,12 @@ def adddata():
 @app.route('/display')
 def display():
     conn = sql.connect("database.db")
-    # rows = []
     c = conn.cursor()
     query = "SELECT * FROM Earthquake"
     c.execute(query)
 
     rows = c.fetchall()
 
-    # for row in rows:
-    #     print(row)
-    # c.fetchall()
-    # conn.close()
-    # print(c)
     return render_template('display.html',info = rows)
 
 
