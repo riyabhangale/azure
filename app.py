@@ -1,41 +1,44 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,flash
 import sqlite3 as sql
 import pandas as pd
+from time import time
 
 app = Flask(__name__)
 
 
 @app.route('/')
-def home():
+def index():
     return render_template('home.html')
 
 
-@app.route('/upload')
+@app.route('/uploadCSV')
 def upload_csv():
     return render_template('upload.html')
 
 
-@app.route('/adddata',methods = ['POST', 'GET'])
-def adddata():
+@app.route('/addAlldata',methods = ['POST', 'GET'])
+def addAlldata():
    if request.method == 'POST':
-       con = sql.connect("database.db")
-       csv = request.files['myfile']
-       file = pd.read_csv(csv)
+       start_time = time()
+       conn = sql.connect("database.db")
+       csvFile = request.files['myfile']
+       data = pd.read_csv(csvFile)
 
-       file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
-       con.close()
-   return render_template("adddata.html", msg = "Record inserted successfully")
+       data.to_sql('Earthquake', conn, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+       end_time = time()
+       conn.close()
+       time_taken = (end_time - start_time)
+       # flash('The Average Time taken to execute the random queries is : ' + "%.4f" % time_taken + " seconds")
+   return render_template("adddata.html", msg = "Record inserted successfully",t = time_taken)
 
 
-@app.route('/display')
-def display():
+@app.route('/displayAll')
+def displayAll():
     conn = sql.connect("database.db")
     c = conn.cursor()
     query = "SELECT * FROM Earthquake"
     c.execute(query)
-
     rows = c.fetchall()
-
     return render_template('display.html',info = rows)
 
 
