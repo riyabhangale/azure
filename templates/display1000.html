@@ -8,17 +8,13 @@
 <h2>9054</h2>
 <h2>Bhangale, Riya Rajendra</h2><br>
 
-
-Is it Cached: {{ isCache }}<br>
-Time taken: {{ time }}
-{#length of rows: {{ len }}#}
-
+Time taken: {{ time }} seconds
 <table border=1>
 {#<tr>#}
 {#    <td></td>#}
 {#</tr>#}
 
-{% for rows in data %}
+{% for rows in info %}
 <tr>
 <td>{{ rows[1] }}</td>
 <td>{{ rows[2] }}</td>
