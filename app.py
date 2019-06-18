@@ -36,10 +36,10 @@ def addAlldata():
        csvFile = request.files['myfileCSV']
        data = pd.read_csv(csvFile)
 
-       data.to_sql('Earthquake', conn, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+       data.to_sql('quake', conn, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
        end_time = time()
        c = conn.cursor()
-       query = "SELECT * FROM Earthquake"
+       query = "SELECT * FROM quake"
        c.execute(query)
        rows = c.fetchall()
        conn.close()
@@ -48,7 +48,7 @@ def addAlldata():
    return render_template("adddata.html", msg = "Record inserted successfully",data=rows,t = time_taken)
 
 
-@app.route('/displayAll')
+
 # def displayAll():
     # conn = sql.connect("database.db")
     # c = conn.cursor()
@@ -57,7 +57,23 @@ def addAlldata():
     # rows = c.fetchall()
     # return render_template('display.html',data = rows, len=len(rows))
 #
-def display():
+
+############POint 5 ################
+@app.route('/point5',methods = ['POST', 'GET'])
+def point5():
+    dep1 = request.form["dep1"]
+    dep2 = request.form["dep2"]
+    long = request.form["long"]
+    conn = sql.connect("database.db")
+    c = conn.cursor()
+    query = 'SELECT * FROM quake where depthError between "'+dep1+'" and "'+dep2+'" and longitude > "'+long+'"'
+    c.execute(query)
+    rows = c.fetchall()
+    # print(rows)
+    return render_template('point5.html',data = rows, len=len(rows))
+
+@app.route('/displayAll')
+def displayAll():
     keyname = 'displayAll'
     if(r.exists(keyname)):
         is_Cache = 'Query with Cache'
@@ -97,32 +113,6 @@ def display1000():
     end_time = time()
     time_taken = (end_time - start_time)
     return render_template('display1000.html',data = rows, time = time_taken)
-    # keyname = 'displayAll1000'
-    # if (r.exists(keyname)):
-    #     is_Cache = 'Query with Cache'
-    #     start_time = time()
-    #     for i in range(1000):
-    #         rows = pickle.loads(r.get(keyname))
-    #     end_time = time()
-    #     time_taken = (end_time - start_time)
-    #     # print(time_taken,is_Cache)
-    #     r.delete(keyname)
-    # else:
-    #     is_Cache = 'Query without Cache'
-    #     start_time = time()
-    #     conn = sql.connect("database.db")
-    #     for i in range(1000):
-    #         c = conn.cursor()
-    #         c.execute("select * from Earthquake")
-    #         rows = c.fetchall()
-    #     end_time = time()
-    #     time_taken = (end_time - start_time)
-    #     # print(time_taken, is_Cache)
-    #     # print(len(rows))
-    #     conn.close()
-    #     r.set(keyname, pickle.dumps(rows))
-    # return render_template("display1000.html", data=rows, time=time_taken, isCache=is_Cache)
-
 
 
 @app.route('/displayMag',methods = ['POST', 'GET'])

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<h2>9054</h2>
+<h2>Bhangale, Riya Rajendra</h2><br>
+
+<table border=1>
+<tr>
+    <td>Date</td>
+    <td>Latitude</td>
+    <td>Longitude</td>
+    <td>Depth Error</td>
+</tr>
+
+{% for rows in data %}
+<tr>
+<td>{{ rows[1] }}</td>
+<td>{{ rows[2] }}</td>
+<td>{{ rows[3] }}</td>
+<td>{{ rows[10] }}</td>
+</tr>
+
+{% endfor %}
+</table>
+</body>
+</html>
