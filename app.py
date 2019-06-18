@@ -4,6 +4,7 @@ import pandas as pd
 from time import time
 import redis
 import pickle
+import random
 
 app = Flask(__name__)
 
@@ -13,6 +14,8 @@ r = redis.StrictRedis(host='riyacloud.redis.cache.windows.net', port=6380, db=0,
 # r.set("msg:hello","Hello Redis!!!")
 # msg = r.get("msg:hello")
 # print(msg)
+# print(random.uniform(0,10))
+
 
 
 @app.route('/')
@@ -35,10 +38,14 @@ def addAlldata():
 
        data.to_sql('Earthquake', conn, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
        end_time = time()
+       c = conn.cursor()
+       query = "SELECT * FROM Earthquake"
+       c.execute(query)
+       rows = c.fetchall()
        conn.close()
        time_taken = (end_time - start_time)
        # flash('The Average Time taken to execute the random queries is : ' + "%.4f" % time_taken + " seconds")
-   return render_template("adddata.html", msg = "Record inserted successfully",t = time_taken)
+   return render_template("adddata.html", msg = "Record inserted successfully",data=rows,t = time_taken)
 
 
 @app.route('/displayAll')
@@ -58,7 +65,7 @@ def display():
         rows = pickle.loads(r.get(keyname))
         end_time = time()
         time_taken = (end_time - start_time)
-        print(time_taken,is_Cache)
+        # print(time_taken,is_Cache)
         r.delete(keyname)
     else:
         is_Cache = 'Query without Cache'
@@ -71,8 +78,8 @@ def display():
         rows = c.fetchall()
         end_time = time()
         time_taken = (end_time - start_time)
-        print(time_taken, is_Cache)
-        print(len(rows))
+        # print(time_taken, is_Cache)
+        # print(len(rows))
         conn.close()
         r.set(keyname, pickle.dumps(rows))
     return render_template("display.html", data=rows, time=time_taken, isCache=is_Cache)
@@ -89,7 +96,66 @@ def display1000():
         rows = c.fetchall()
     end_time = time()
     time_taken = (end_time - start_time)
-    return render_template('display1000.html',info = rows, time = time_taken)
+    return render_template('display1000.html',data = rows, time = time_taken)
+    # keyname = 'displayAll1000'
+    # if (r.exists(keyname)):
+    #     is_Cache = 'Query with Cache'
+    #     start_time = time()
+    #     for i in range(1000):
+    #         rows = pickle.loads(r.get(keyname))
+    #     end_time = time()
+    #     time_taken = (end_time - start_time)
+    #     # print(time_taken,is_Cache)
+    #     r.delete(keyname)
+    # else:
+    #     is_Cache = 'Query without Cache'
+    #     start_time = time()
+    #     conn = sql.connect("database.db")
+    #     for i in range(1000):
+    #         c = conn.cursor()
+    #         c.execute("select * from Earthquake")
+    #         rows = c.fetchall()
+    #     end_time = time()
+    #     time_taken = (end_time - start_time)
+    #     # print(time_taken, is_Cache)
+    #     # print(len(rows))
+    #     conn.close()
+    #     r.set(keyname, pickle.dumps(rows))
+    # return render_template("display1000.html", data=rows, time=time_taken, isCache=is_Cache)
+
+
+
+@app.route('/displayMag',methods = ['POST', 'GET'])
+def displayMag():
+    for i in range(2):
+        mag = random.randint(0,8)
+        keyname = 'mag' + str(mag)
+        print(keyname)
+        if(r.exists(keyname)):
+            is_Cache = 'Query with Cache'
+            start_time = time()
+            rows = pickle.loads(r.get(keyname))
+            end_time = time()
+            time_taken = (end_time - start_time)
+            # print(time_taken,is_Cache)
+            # r.delete(keyname)
+        else:
+            is_Cache = 'Query without Cache'
+            start_time = time()
+            conn = sql.connect("database.db")
+
+            c = conn.cursor()
+            query = 'select * from Earthquake where mag > '+str(mag)+''
+            c.execute(query)
+
+            rows = c.fetchall()
+            end_time = time()
+            time_taken = (end_time - start_time)
+        # print(time_taken, is_Cache)
+        # print(len(rows))
+            conn.close()
+            r.set(keyname, pickle.dumps(rows))
+    return render_template("displayMag.html", data=rows, time=time_taken, isCache=is_Cache)
 
 
 if __name__ == '__main__':

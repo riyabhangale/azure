@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<title></title>
 </head>
 <body>
 
-<br>
-<h2>  {{ msg }} </h2>
-Time Taken: {{ t }} seconds
+<h2>9054</h2>
+<h2>Bhangale, Riya Rajendra</h2><br>
 
+Time taken: {{ time }} seconds
+Is it Cached?: {{ isCache }}
 <table border=1>
 {#<tr>#}
 {#    <td></td>#}
 {#</tr>#}
-
+<br>
 {% for rows in data %}
 <tr>
 <td>{{ rows[1] }}</td>
 <td>{{ rows[2] }}</td>
 <td>{{ rows[3] }}</td>
+<td>{{ rows[4] }}</td>
+<td>{{ rows[5] }}</td>
 </tr>
 
 {% endfor %}
