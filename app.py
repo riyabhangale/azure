@@ -72,13 +72,11 @@ def point5():
     # c.execute('PRAGMA TABLE_INFO(quake)')
     rows = c.fetchall()
     temp = []
-
     for i in range(len(rows)):
         dict1 = {}
         dict1['mag'] = rows[i][0]
         dict1['depth'] = rows[i][1]
         temp.append(dict1)
-
     return render_template('point5.html',data =temp)
 
 
