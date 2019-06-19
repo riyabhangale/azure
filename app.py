@@ -106,7 +106,7 @@ def point6():
             time1.append(end_time)
             res.append(end_time)
             temp.append(res)
-        print(temp)
+        # print(temp)
         # print(temp[1])
         # print(time1)
         # print(time1)
