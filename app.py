@@ -5,6 +5,7 @@ from time import time
 import redis
 import pickle
 import random
+import numpy as np
 
 app = Flask(__name__)
 
@@ -71,6 +72,47 @@ def point5():
     rows = c.fetchall()
     # print(rows)
     return render_template('point5.html',data = rows, len=len(rows))
+
+
+########### Point 6 #################
+@app.route('/point6', methods=['GET', 'POST'])
+def point6():
+    if request.method == 'POST':
+        dep1 = float(request.form["dep11"])
+        dep2 = float(request.form["dep22"])
+        qno = int(request.form["qno"])
+        temp = []
+        time1 = []
+        cache = "mycache"
+        for i in range(qno):
+            res = []
+            ran_num = "{:.3f}".format(random.uniform(dep1, dep2))
+            ran_num2 = "{:.3f}".format(random.uniform(dep1, dep2))
+            start_time = time()
+            query = "select * from quake where depthError between ' " + str(ran_num) + " 'and ' " + str(ran_num2) + " ' "
+            conn = sql.connect("database.db")
+            c = conn.cursor()
+            c.execute(query)
+            rows = c.fetchall()
+            # rows = np.array(rows)
+            # rows = rows.flatten()
+            res.append(str(len(rows)))
+            res.append(ran_num)
+            res.append(ran_num2)
+
+            r.set(cache + str(i), 1)
+            # print (rows)
+            end_time = time() - start_time
+            time1.append(end_time)
+            res.append(end_time)
+            temp.append(res)
+        print(temp)
+        # print(temp[1])
+        # print(time1)
+        # print(time1)
+    return render_template("point6.html", data=temp, time=time1, random = res)
+
+
 
 @app.route('/displayAll')
 def displayAll():

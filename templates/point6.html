@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<h2>9054</h2>
+<h2>Bhangale, Riya Rajendra</h2><br>
+
+<table border=1>
+<tr>
+    <td>Rows</td>
+    <td>Random No 1</td>
+    <td>Random No 2</td>
+    <td>Time</td>
+</tr>
+{% for rows in data %}
+{#    {% for rows1 in temp %}#}
+<tr>
+<td>{{ rows[0] }}</td>
+<td>{{ rows[1] }}</td>
+<td>{{ rows[2] }}</td>
+<td>{{ rows[3] }}</td>
+</tr>
+{#{% endfor %}#}
+{% endfor %}
+</table>
+</body>
+</html>
