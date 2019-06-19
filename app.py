@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,flash
+from flask import Flask, render_template, request,flash, jsonify
 import sqlite3 as sql
 import pandas as pd
 from time import time
@@ -37,7 +37,7 @@ def addAlldata():
        csvFile = request.files['myfileCSV']
        data = pd.read_csv(csvFile)
 
-       data.to_sql('quake', conn, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+       data.to_sql('quake', conn, schema=None, if_exists='replace', index=True, chunksize=None, index_label=None, dtype=None)
        end_time = time()
        c = conn.cursor()
        query = "SELECT * FROM quake"
@@ -64,14 +64,22 @@ def addAlldata():
 def point5():
     dep1 = request.form["dep1"]
     dep2 = request.form["dep2"]
-    long = request.form["long"]
+    # long = request.form["long"]
     conn = sql.connect("database.db")
     c = conn.cursor()
-    query = 'SELECT * FROM quake where depthError between "'+dep1+'" and "'+dep2+'" and longitude > "'+long+'"'
+    query = 'SELECT mag,depth FROM quake where depthError between "'+dep1+'" and "'+dep2+'" group by mag '
     c.execute(query)
+    # c.execute('PRAGMA TABLE_INFO(quake)')
     rows = c.fetchall()
-    # print(rows)
-    return render_template('point5.html',data = rows, len=len(rows))
+    temp = []
+
+    for i in range(len(rows)):
+        dict1 = {}
+        dict1['mag'] = rows[i][0]
+        dict1['depth'] = rows[i][1]
+        temp.append(dict1)
+
+    return render_template('point5.html',data =temp)
 
 
 ########### Point 6 #################
@@ -117,14 +125,14 @@ def point7():
         cache = "mycache"
         full_start = time()
         for i in range(qno1):
-            # if r.exists(cache + str(i)):
-            #     # start_t = time.time()
-            #     rows = pickle.loads(r.get(cache + str(i)))
-            #     temp.append(rows)
-            #     # end_t = time.time() - start_t
-            #     # time2.append(end_t)
+            if r.exists(cache + str(i)):
+                # start_t = time.time()
+                rows = pickle.loads(r.get(cache + str(i)))
+                temp.append(rows)
+                # end_t = time.time() - start_t
+                # time2.append(end_t)
 
-            # else:
+            else:
                 res = []
                 ran_num = "{:.3f}".format(random.uniform(dep1, dep2))
                 ran_num2 = "{:.3f}".format(random.uniform(dep1, dep2))
@@ -144,6 +152,49 @@ def point7():
 
         end_time = time() - full_start
     return render_template("point7.html", data=temp, time2=end_time)
+
+
+############# point 8 #################
+@app.route('/point8', methods=['GET', 'POST'])
+def point8():
+    if request.method == 'POST':
+        dep1 = float(request.form["dep1111"])
+        dep2 = float(request.form["dep2222"])
+        qno1 = int(request.form["qno11"])
+        temp = []
+        time1 = []
+        # time2 = []
+        cache = "mycache"
+        # r.delete(cache + str(0))
+        for i in range(qno1):
+            if r.exists(cache + str(i)):
+                keyword = cache + str(i)
+                print(keyword)
+                start_t = time()
+                rows = pickle.loads(r.get(keyword))
+                temp.append(rows)
+                end_t = time() - start_t
+                time1.append(end_t)
+
+            else:
+                res = []
+                ran_num = "{:.3f}".format(random.uniform(dep1, dep2))
+                ran_num2 = "{:.3f}".format(random.uniform(dep1, dep2))
+                start_time = time()
+                query = "select * from quake where depthError between ' " + str(ran_num) + " 'and ' " + str(ran_num2) + " ' "
+                con = sql.connect("database.db")
+                cur = con.cursor()
+                cur.execute(query)
+                rows = cur.fetchall()
+                res.append(len(rows))
+                res.append(ran_num)
+                res.append(ran_num2)
+                temp.append(res)
+                r.set(cache + str(i), pickle.dumps(res))
+                end_time = time() - start_time
+                time1.append(end_time)
+
+        return render_template("point8.html", data=temp, time2=time1)
 
 
 @app.route('/displayAll')
