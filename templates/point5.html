@@ -23,10 +23,10 @@
 
   <script type="text/javascript">
     var svg = dimple.newSvg("body", 800, 600);
-    var data = [
-      { "Word":"Hello", "Awesomeness":2000 },
-      { "Word":"World", "Awesomeness":3000 }
-    ];
+    {#var data = [#}
+    {#  { "Word":"Hello", "Awesomeness":2000 },#}
+    {#  { "Word":"World", "Awesomeness":3000 }#}
+    {#];#}
     var rdata = {{ data | tojson | safe }};
     var chart = new dimple.chart(svg, rdata);
     chart.addCategoryAxis("x", "mag");
