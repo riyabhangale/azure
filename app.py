@@ -77,7 +77,7 @@ def point5():
         dict1['mag'] = rows[i][0]
         dict1['depth'] = rows[i][1]
         temp.append(dict1)
-    return render_template('point5.html',data =temp)
+    return render_template('plotTest.html')#,data =temp)
 
 
 ########### Point 6 #################
