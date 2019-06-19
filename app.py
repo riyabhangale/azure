@@ -94,24 +94,56 @@ def point6():
             c = conn.cursor()
             c.execute(query)
             rows = c.fetchall()
-            # rows = np.array(rows)
-            # rows = rows.flatten()
             res.append(str(len(rows)))
             res.append(ran_num)
             res.append(ran_num2)
 
             r.set(cache + str(i), 1)
-            # print (rows)
             end_time = time() - start_time
             time1.append(end_time)
             res.append(end_time)
             temp.append(res)
-        # print(temp)
-        # print(temp[1])
-        # print(time1)
-        # print(time1)
     return render_template("point6.html", data=temp, time=time1, random = res)
 
+
+##############POint 7 #######################
+@app.route('/point7', methods=['GET', 'POST'])
+def point7():
+    if request.method == 'POST':
+        dep1 = float(request.form["dep111"])
+        dep2 = float(request.form["dep222"])
+        qno1 = int(request.form["qno1"])
+        temp = []
+        cache = "mycache"
+        full_start = time()
+        for i in range(qno1):
+            # if r.exists(cache + str(i)):
+            #     # start_t = time.time()
+            #     rows = pickle.loads(r.get(cache + str(i)))
+            #     temp.append(rows)
+            #     # end_t = time.time() - start_t
+            #     # time2.append(end_t)
+
+            # else:
+                res = []
+                ran_num = "{:.3f}".format(random.uniform(dep1, dep2))
+                ran_num2 = "{:.3f}".format(random.uniform(dep1, dep2))
+                # st = time.time()
+                query = "select * from quake where depthError between ' " + str(ran_num) + " 'and ' " + str(ran_num2) + " ' "
+                con = sql.connect("database.db")
+                cur = con.cursor()
+                cur.execute(query)
+                rows = cur.fetchall()
+                res.append(str(len(rows)))
+                res.append(ran_num)
+                res.append(ran_num2)
+                temp.append(res)
+                r.set(cache + str(i), pickle.dumps(res))
+                # et = time.time() - st
+                # time1.append(et)
+
+        end_time = time() - full_start
+    return render_template("point7.html", data=temp, time2=end_time)
 
 
 @app.route('/displayAll')
