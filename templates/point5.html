@@ -22,9 +22,9 @@
 
 <div id="chart">
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.0.min.js"></script>
     <script type="text/javascript">
-        alert("Javascript Working");
+        {#alert("Javascript Working");#}
     var svg = dimple.newSvg("#chart", 800, 600);
     var rdata = {{ data | tojson | safe }};
     var chart = new dimple.chart(svg, rdata);
