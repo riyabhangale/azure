@@ -9,14 +9,27 @@
 
 <h2>9054</h2>
 <h2>Bhangale, Riya Rajendra</h2><br>
+<table>
+    {% for rows in data %}
+<tr>
+<td>{{ rows["mag"] }}</td>
+<td>{{ rows["depth"] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+
 <div id="chart">
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
     <script type="text/javascript">
+        alert("Javascript Working");
     var svg = dimple.newSvg("#chart", 800, 600);
     var rdata = {{ data | tojson | safe }};
     var chart = new dimple.chart(svg, rdata);
     chart.addCategoryAxis("x", "mag");
+    {#chart.addMeasureAxis("x", "mag");#}
     chart.addMeasureAxis("y", "depth");
     chart.addSeries(null, dimple.plot.bar);
     chart.draw();
