@@ -9,15 +9,11 @@
 
 <h2>9054</h2>
 <h2>Bhangale, Riya Rajendra</h2><br>
-
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script src="https://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
-  <script type="text/javascript">
-    var svg = dimple.newSvg("body", 800, 600);
-    {#var data = [#}
-    {#  { "Word":"Hello", "Awesomeness":2000 },#}
-    {#  { "Word":"World", "Awesomeness":3000 }#}
-    {#];#}
+<div id="chart">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+    <script type="text/javascript">
+    var svg = dimple.newSvg("#chart", 800, 600);
     var rdata = {{ data | tojson | safe }};
     var chart = new dimple.chart(svg, rdata);
     chart.addCategoryAxis("x", "mag");
@@ -25,6 +21,8 @@
     chart.addSeries(null, dimple.plot.bar);
     chart.draw();
   </script>
+
+</div>
 
 </body>
 </html>
