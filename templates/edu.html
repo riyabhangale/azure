@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>9054</h2>
+<h2>Bhangale, Riya Rajendra</h2><br>
+
+<div id="chart">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.min.js"></script>
+    <script type="text/javascript">
+        {#alert("Javascript Working");#}
+    var svg = dimple.newSvg("#chart", 800, 600);
+    var rdata = {{ data | tojson | safe }};
+    var chart = new dimple.chart(svg, rdata);
+    chart.setBounds(80, 30, 480, 330);
+    chart.addMeasureAxis("y", "blpercent");
+    chart.addCategoryAxis("x", "year");
+    {#chart.addColorAxis("state", ["#333333","#666666","#999999"]);#}
+    chart.addSeries(null, dimple.plot.bubble);
+    chart.draw();
+  </script>
+
+</div>
+
+</body>
+</html>

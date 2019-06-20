@@ -10,13 +10,6 @@ import numpy as np
 app = Flask(__name__)
 
 r = redis.StrictRedis(host='riyacloud.redis.cache.windows.net', port=6380, db=0, password='593PO2XLFETRrSYj2sSnOzznMqlLgrKjKiaCMQEB7Fw=', ssl=True)
-# result = r.ping()
-# print("Ping returned : " + str(result))
-# r.set("msg:hello","Hello Redis!!!")
-# msg = r.get("msg:hello")
-# print(msg)
-# print(random.uniform(0,10))
-
 
 
 @app.route('/')
@@ -49,7 +42,6 @@ def addAlldata():
    return render_template("adddata.html", msg = "Record inserted successfully",data=rows,t = time_taken)
 
 
-############POint 5 ################
 @app.route('/popRange',methods = ['POST', 'GET'])
 def popRange():
     if request.method == 'POST':
@@ -90,6 +82,58 @@ def popRange():
     end_time = time()
     time_taken = (end_time - start_time)
     return render_template('popRange.html', t=time_taken, rec=r[0][0], rec1=r1[0][0], rec2=r2[0][0],data=temp)
+
+
+@app.route('/edu', methods=['GET', 'POST'])
+def edu():
+    if request.method == 'POST':
+        input3 = request.form['loc']
+        input4 = request.form['y1']
+        input5 = request.form['y2']
+
+        conn = sql.connect("database.db")
+        c = conn.cursor()
+        start_time = time()
+        query= "SELECT year,blpercent FROM edu where year between '"+input4+"' and '"+input5+"' and Code = '"+input3+"'"
+        # print(query)
+        rows = c.execute(query).fetchall()
+        # print(r)
+        temp = []
+        for i in range(len(rows)):
+            dict1 = {}
+            dict1['year'] = rows[i][0]
+            dict1['blpercent'] = rows[i][1]
+            temp.append(dict1)
+
+
+    end_time = time()
+    time_taken = (end_time - start_time)
+    return render_template('edu.html', t=time_taken, data=temp)
+
+
+
+@app.route('/popRangeInc',methods = ['POST', 'GET'])
+def popRangeInc():
+    if request.method == 'POST':
+        input5 = 'col' + request.form['year1']
+        input6 = request.form['r11']
+
+        conn = sql.connect("database.db")
+        c = conn.cursor()
+        # start_time = time()
+        temp = []
+        for i in np.arange(0, 40, int(input6)):
+            query = "select count(State) as g1 from pop where " + input5 + " between "+str(i)+" and "+str(i + int(input6))+" "
+            r = c.execute(query).fetchall()
+            dict1 = {}
+            dict1['range'] = str(i)+' - '+str((i + int(input6)))
+            dict1['stateCount'] = r[0][0]
+            temp.append(dict1)
+
+        print(temp)
+    # end_time = time()
+    # time_taken = (end_time - start_time)
+    return render_template('popRangeInc.html',data=temp)
 
 
 ############POint 5 ################
