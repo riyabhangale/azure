@@ -37,10 +37,10 @@ def addAlldata():
        csvFile = request.files['myfileCSV']
        data = pd.read_csv(csvFile)
 
-       data.to_sql('quake', conn, schema=None, if_exists='replace', index=True, chunksize=None, index_label=None, dtype=None)
+       data.to_sql('pop', conn, schema=None, if_exists='replace', index=True, chunksize=None, index_label=None, dtype=None)
        end_time = time()
        c = conn.cursor()
-       query = "SELECT * FROM quake"
+       query = "SELECT * FROM pop"
        c.execute(query)
        rows = c.fetchall()
        conn.close()
@@ -49,15 +49,48 @@ def addAlldata():
    return render_template("adddata.html", msg = "Record inserted successfully",data=rows,t = time_taken)
 
 
+############POint 5 ################
+@app.route('/popRange',methods = ['POST', 'GET'])
+def popRange():
+    if request.method == 'POST':
+        input5 = 'col' + request.form['year']
+        # year = 'col' + input5
+        # print(year)
+        input6 = request.form['r1']
+        input7 = request.form['r2']
+        input8 = request.form['r3']
+        input9 = request.form['r4']
+        input10 = request.form['r5']
+        input11 = request.form['r6']
+        conn = sql.connect("database.db")
+        c = conn.cursor()
+        start_time = time()
+        query = "select count(State) as g1 from pop where " + input5 + " between '" + input6 + "' and '" + input7 + "' "
+        query1 = "select count(State) as g2 from pop where " + input5 + " between '" + input8 + "' and '" + input9 + "'"
+        query2 = "select count(State) as g3 from pop where " + input5 + " between '" + input10 + "' and '" + input11 + "'"
+        # print(query)
+        r = c.execute(query).fetchall()
+        r1 = c.execute(query1).fetchall()
+        r2 = c.execute(query2).fetchall()
+        temp = []
+        # for i in range(len(rows)):
+        dict1 = {}
+        dict1['range'] = input6+' - '+input7
+        dict1['state'] = r[0][0]
+        temp.append(dict1)
+        dict1 = {}
+        dict1['range'] = input8 + ' - ' + input9
+        dict1['state'] = r1[0][0]
+        temp.append(dict1)
+        dict1 = {}
+        dict1['range'] = input10 + ' - ' + input11
+        dict1['state'] = r2[0][0]
+        temp.append(dict1)
+        print(temp)
+    end_time = time()
+    time_taken = (end_time - start_time)
+    return render_template('popRange.html', t=time_taken, rec=r[0][0], rec1=r1[0][0], rec2=r2[0][0],data=temp)
 
-# def displayAll():
-    # conn = sql.connect("database.db")
-    # c = conn.cursor()
-    # query = "SELECT * FROM Earthquake"
-    # c.execute(query)
-    # rows = c.fetchall()
-    # return render_template('display.html',data = rows, len=len(rows))
-#
 
 ############POint 5 ################
 @app.route('/point5',methods = ['POST', 'GET'])
