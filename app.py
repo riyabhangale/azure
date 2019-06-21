@@ -164,13 +164,13 @@ def popRangeInc():
         for i in np.arange(0, 30000, in1):
             query = "select count(StateName) as g1 from voting where TotalPop between "+str(i)+" and "+str(i + in1)+" "
             r = c.execute(query).fetchall()
-            print(query)
+            # print(query)
             dict1 = {}
             dict1['range'] = str(i/1000)+' - '+str((i + in1)/1000)
             dict1['stateCount'] = r[0][0]
             temp.append(dict1)
 
-        print(temp)
+        # print(temp)
     # end_time = time()
     # time_taken = (end_time - start_time)
     return render_template('popRangeInc.html',data=temp)
