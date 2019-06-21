@@ -18,8 +18,8 @@
     var rdata = {{ data | tojson | safe }};
     var chart = new dimple.chart(svg, rdata);
     chart.setBounds(80, 30, 480, 330);
-    chart.addMeasureAxis("y", "blpercent");
-    chart.addCategoryAxis("x", "year");
+    chart.addCategoryAxis("y", "StateName");
+    chart.addCategoryAxis("x", "TotalPop");
     {#chart.addColorAxis("state", ["#333333","#666666","#999999"]);#}
     chart.addSeries(null, dimple.plot.bubble);
     chart.draw();

@@ -15,7 +15,7 @@
 <br>
 {#<a href = "/addAlldata">Result of add</a>#}
 <br>
-<a href = "/displayAll">Display all records</a>
+<a href = "/vote1">Display population</a>
 {#<br>#}
 {#<a href = "/display1000">Run query for 1000 times</a>#}
 {#<br>#}
@@ -23,30 +23,25 @@
 
 <br><br>
 <h4>Population Range </h4><br>
-<form action="/popRange" method="POST">
-Year: <input type="text" name="year"><br>
-Range1:<input type="text" name="r1">
-Range2:<input type="text" name="r2"><br>
-Range3:<input type="text" name="r3">
-Range4:<input type="text" name="r4"><br>
-Range5:<input type="text" name="r5">
-Range6:<input type="text" name="r6"><br>
+<form action="/popRange1" method="POST">
+{#Year: <input type="text" name="year"><br>#}
+TotalPop Range1:<input type="text" name="r1">
+TotalPop Range2:<input type="text" name="r2"><br>
 <input type="submit" value="submit"><br><br>
 </form>
 
-<br><br>
-<h4>Education BLPercent</h4>
-<form action="/edu" method="POST">
-E code:<input type="text" name="loc">
-Year1:<input type="text" name="y1">
-Year2:<input type="text" name="y2">
-<input type="submit" value="submit"><br><br>
-</form>
+{#<br><br>#}
+{#<h4>Education BLPercent</h4>#}
+{#<form action="/edu" method="POST">#}
+{#E code:<input type="text" name="loc">#}
+{#Year1:<input type="text" name="y1">#}
+{#Year2:<input type="text" name="y2">#}
+{#<input type="submit" value="submit"><br><br>#}
+{#</form>#}
 
 <br><br>
 <h4>Population Range Increment </h4><br>
 <form action="/popRangeInc" method="POST">
-Year: <input type="text" name="year1"><br>
 Range: <input type="text" name="r11">
 <input type="submit" value="submit"><br><br>
 </form>

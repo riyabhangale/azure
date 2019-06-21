@@ -8,24 +8,33 @@
 <h2>9054</h2>
 <h2>Bhangale, Riya Rajendra</h2><br>
 
-
-Is it Cached: {{ isCache }}<br>
-Time taken: {{ time }}
-{#length of rows: {{ len }}#}
-
+<h4>Between 2 and 8</h4>
 <table border=1>
-{#<tr>#}
-{#    <td></td>#}
-{#</tr>#}
+<tr>
+    <td>StateName</td>
+</tr>
 
 {% for rows in data %}
 <tr>
-<td>{{ rows[1] }}</td>
-<td>{{ rows[2] }}</td>
-<td>{{ rows[3] }}</td>
+<td>{{ rows[0] }}</td>
 </tr>
 
 {% endfor %}
 </table>
+<br><br>
+<h4>Between 8 and 40</h4>
+<table border=1>
+<tr>
+    <td>StateName</td>
+</tr>
+
+{% for rows in data1 %}
+<tr>
+<td>{{ rows[0] }}</td>
+</tr>
+
+{% endfor %}
+</table>
+
 </body>
 </html>

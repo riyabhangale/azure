@@ -30,16 +30,55 @@ def addAlldata():
        csvFile = request.files['myfileCSV']
        data = pd.read_csv(csvFile)
 
-       data.to_sql('pop', conn, schema=None, if_exists='replace', index=True, chunksize=None, index_label=None, dtype=None)
+       data.to_sql('voting', conn, schema=None, if_exists='replace', index=True, chunksize=None, index_label=None, dtype=None)
        end_time = time()
        c = conn.cursor()
-       query = "SELECT * FROM pop"
+       query = "SELECT * FROM voting"
        c.execute(query)
        rows = c.fetchall()
        conn.close()
        time_taken = (end_time - start_time)
        # flash('The Average Time taken to execute the random queries is : ' + "%.4f" % time_taken + " seconds")
    return render_template("adddata.html", msg = "Record inserted successfully",data=rows,t = time_taken)
+
+
+@app.route('/vote1', methods=['GET', 'POST'])
+def vote1():
+    conn = sql.connect("database.db")
+    c = conn.cursor()
+    query= "SELECT StateName as S FROM voting where TotalPop between 2000 and 8000 "
+    print(query)
+    rows = c.execute(query).fetchall()
+    print(rows)
+    print(len(rows))
+    query1 = "SELECT StateName as S FROM voting where TotalPop between 8000 and 40000 "
+    rows1 = c.execute(query1).fetchall()
+    print(query1)
+    print(rows1)
+    print(len(rows1))
+    return render_template('display.html',data=rows, data1 = rows1)
+
+
+@app.route('/popRange1',methods = ['POST', 'GET'])
+def popRange1():
+    if request.method == 'POST':
+        input6 = str(int(request.form['r1'])*1000)
+        input7 = str(int(request.form['r2'])*1000)
+        conn = sql.connect("database.db")
+        c = conn.cursor()
+        start_time = time()
+        query = "select StateName from voting where TotalPop between '" + input6 + "' and '" + input7 + "' "
+        r = c.execute(query).fetchall()
+        temp = []
+        for i in range(len(r)):
+            dict1 = {}
+            dict1['TotalPop'] = input6+' - '+input7
+            dict1['StateName'] = r[i][0]
+            temp.append(dict1)
+        print(temp)
+    # end_time = time()
+    # time_taken = (end_time - start_time)
+    return render_template('edu.html',data=temp)
 
 
 @app.route('/popRange',methods = ['POST', 'GET'])
@@ -115,18 +154,19 @@ def edu():
 @app.route('/popRangeInc',methods = ['POST', 'GET'])
 def popRangeInc():
     if request.method == 'POST':
-        input5 = 'col' + request.form['year1']
+        # input5 = 'col' + request.form['year1']
         input6 = request.form['r11']
-
+        in1 = int(input6)*1000
         conn = sql.connect("database.db")
         c = conn.cursor()
         # start_time = time()
         temp = []
-        for i in np.arange(0, 40, int(input6)):
-            query = "select count(State) as g1 from pop where " + input5 + " between "+str(i)+" and "+str(i + int(input6))+" "
+        for i in np.arange(0, 30000, in1):
+            query = "select count(StateName) as g1 from voting where TotalPop between "+str(i)+" and "+str(i + in1)+" "
             r = c.execute(query).fetchall()
+            print(query)
             dict1 = {}
-            dict1['range'] = str(i)+' - '+str((i + int(input6)))
+            dict1['range'] = str(i/1000)+' - '+str((i + in1)/1000)
             dict1['stateCount'] = r[0][0]
             temp.append(dict1)
 
