@@ -170,9 +170,6 @@ def popRangeInc():
             dict1['stateCount'] = r[0][0]
             temp.append(dict1)
 
-        # print(temp)
-    # end_time = time()
-    # time_taken = (end_time - start_time)
     return render_template('popRangeInc.html',data=temp)
 
 
