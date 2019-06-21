@@ -67,13 +67,14 @@ def popRange1():
         conn = sql.connect("database.db")
         c = conn.cursor()
         start_time = time()
-        query = "select StateName from voting where TotalPop between '" + input6 + "' and '" + input7 + "' "
+        query = "select TotalPop,Registered from voting where TotalPop between '" + input6 + "' and '" + input7 + "' "
         r = c.execute(query).fetchall()
         temp = []
+        # print(r)
         for i in range(len(r)):
             dict1 = {}
-            dict1['TotalPop'] = input6+' - '+input7
-            dict1['StateName'] = r[i][0]
+            dict1['TotalPop'] = r[i][0]
+            dict1['Registered'] = r[i][1]
             temp.append(dict1)
         print(temp)
     # end_time = time()

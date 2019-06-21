@@ -16,11 +16,11 @@
         {#alert("Javascript Working");#}
     var svg = dimple.newSvg("#chart", 800, 600);
     var rdata = {{ data | tojson | safe }};
+    console.log(rdata);
     var chart = new dimple.chart(svg, rdata);
-    chart.setBounds(80, 30, 480, 330);
-    chart.addCategoryAxis("y", "StateName");
-    chart.addCategoryAxis("x", "TotalPop");
-    {#chart.addColorAxis("state", ["#333333","#666666","#999999"]);#}
+    {#chart.setBounds(80, 30, 480, 330);#}
+        chart.addCategoryAxis("x", "TotalPop");
+    chart.addCategoryAxis("y", "Registered");
     chart.addSeries(null, dimple.plot.bubble);
     chart.draw();
   </script>
