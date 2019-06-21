@@ -76,7 +76,7 @@ def popRange1():
             dict1['TotalPop'] = r[i][0]
             dict1['Registered'] = r[i][1]
             temp.append(dict1)
-        print(temp)
+        # print(temp)
     # end_time = time()
     # time_taken = (end_time - start_time)
     return render_template('edu.html',data=temp)
