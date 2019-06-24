@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>9054</h2>
+<h2>Bhangale, Riya Rajendra</h2><br>
+
+<div id="chart">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.min.js"></script>
+    <script type="text/javascript">
+        {#alert("Javascript Working");#}
+    var svg = dimple.newSvg("#chart", 800, 600);
+    var rdata = {{ data | tojson | safe }};
+    console.log(rdata);
+    var chart = new dimple.chart(svg, rdata);
+    {#chart.setBounds(80, 30, 480, 330);#}
+    chart.addMeasureAxis("x", "modcount");
+    chart.addCategoryAxis("y", "number");
+    {#chart.addColorAxis("state", ["#333333","#666666","#999999"]);#}
+        chart.defaultColors = [
+          new dimple.color("#3498db", "#2980b9", 1), // blue
+          new dimple.color("#e74c3c", "#c0392b", 1), // red
+          new dimple.color("#2ecc71", "#27ae60", 1), // green
+          new dimple.color("#9b59b6", "#8e44ad", 1), // purple
+          new dimple.color("#95a5a6", "#7f8c8d", 1), // gray
+          new dimple.color("#FF0000", 1), // red
+          new dimple.color("#00FF00", 1), // green
+
+      ];
+    {#chart.addSeries(null, dimple.plot.bar);#}
+    var s = chart.addSeries(null, dimple.plot.bar);
+      {#myChart.draw();#}
+    {#chart.addLegend(200, 10, 380, 20, "right");#}
+    chart.draw();
+  </script>
+
+</div>
+
+</body>
+</html>

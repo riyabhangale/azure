@@ -46,16 +46,16 @@ def addAlldata():
 def vote1():
     conn = sql.connect("database.db")
     c = conn.cursor()
-    query= "SELECT StateName as S FROM voting where TotalPop between 2000 and 8000 "
-    print(query)
+    query= "SELECT StateName FROM voting where TotalPop between 2000 and 8000 "
+    # print(query)
     rows = c.execute(query).fetchall()
-    print(rows)
-    print(len(rows))
-    query1 = "SELECT StateName as S FROM voting where TotalPop between 8000 and 40000 "
+    # print(rows)
+    # print(len(rows))
+    query1 = "SELECT StateName FROM voting where TotalPop between 8000 and 40000 "
     rows1 = c.execute(query1).fetchall()
-    print(query1)
-    print(rows1)
-    print(len(rows1))
+    # print(query1)
+    # print(rows1)
+    # print(len(rows1))
     return render_template('display.html',data=rows, data1 = rows1)
 
 
@@ -80,6 +80,73 @@ def popRange1():
     # end_time = time()
     # time_taken = (end_time - start_time)
     return render_template('edu.html',data=temp)
+
+
+
+@app.route('/last',methods = ['POST', 'GET'])
+def Last():
+    if request.method == 'POST':
+        no = int(request.form['no'])
+        temp = []
+        for i in range(1,no+1):
+            var = i*i*i
+            mod = var % 10
+            temp.append(mod)
+        # print(temp)
+
+        temp1 =[]
+        c1 = temp.count(1)
+        c2 = temp.count(2)
+        c3 = temp.count(3)
+        c4 = temp.count(4)
+        c5 = temp.count(5)
+        c6 = temp.count(6)
+        c7 = temp.count(7)
+        c8 = temp.count(8)
+        c9 = temp.count(9)
+        c0 = temp.count(0)
+        dict1 = {}
+        dict1['modcount'] = c0
+        dict1['number'] = 0
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c1
+        dict1['number'] = 1
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c2
+        dict1['number'] = 2
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c3
+        dict1['number'] = 3
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c4
+        dict1['number'] = 4
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c5
+        dict1['number'] = 5
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c6
+        dict1['number'] = 6
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c7
+        dict1['number'] = 7
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c8
+        dict1['number'] = 8
+        temp1.append(dict1)
+        dict1 = {}
+        dict1['modcount'] = c9
+        dict1['number'] = 9
+        temp1.append(dict1)
+
+    return render_template('horbar.html', data=temp1)
 
 
 @app.route('/popRange',methods = ['POST', 'GET'])
