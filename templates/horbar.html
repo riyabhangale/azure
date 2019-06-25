@@ -19,8 +19,8 @@
     console.log(rdata);
     var chart = new dimple.chart(svg, rdata);
     {#chart.setBounds(80, 30, 480, 330);#}
-    chart.addMeasureAxis("x", "modcount");
-    chart.addCategoryAxis("y", "number");
+    chart.addMeasureAxis("y", "modcount");
+    chart.addCategoryAxis("x", "number");
     {#chart.addColorAxis("state", ["#333333","#666666","#999999"]);#}
         chart.defaultColors = [
           new dimple.color("#3498db", "#2980b9", 1), // blue
@@ -33,7 +33,7 @@
 
       ];
     {#chart.addSeries(null, dimple.plot.bar);#}
-    var s = chart.addSeries(null, dimple.plot.bar);
+    var s = chart.addSeries(null, dimple.plot.bubble);
       {#myChart.draw();#}
     {#chart.addLegend(200, 10, 380, 20, "right");#}
     chart.draw();
